@@ -1,0 +1,155 @@
+<h1>{{title}}</h1>
+  <div class="row">
+      <div class="col-sm-8">
+          <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">FullName</th>
+                  <th scope="col">Birthday</th>
+                  <th scope="col">Active</th>
+                  <th scope="col">Email</th>
+                  <th scope="col" colspan="3">Operation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let c of customerList">
+                  <th scope="row">{{c?.firstname +" "+ c?.lastname}}</th>
+                  <td>{{c?.birthday?.day +"/"+ c?.birthday?.month +"/"+ c?.birthday?.year}}</td> <!-- {{c?.birthday| date:'dd/MM/yyyy'} -->
+                  <td>{{c?.active}}</td>
+                  <td>{{c?.email}}</td>
+                  <td><button type="button" class="btn btn-warning" (click)="editCustomer(c?._id)">Update</button></td>
+                  <td><button type="button" class="btn btn-danger" (click)="deleteCustomer(c?._id)">Delete</button></td>
+                  <td><button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal" (click)="getCustomerById(c?._id)">Details</button></td>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+      <div class="col-sm-3">
+          <h3>Customer detail :</h3>
+          <form [formGroup]="addForm" (ngSubmit)="createCustomer()">
+              <div class="form-group">
+                <label for="firstname">FirstName</label>
+                <input type="text" class="form-control" name="firstname" formControlName="firstname" id="firstname" aria-describedby="firstNameHelp" placeholder="Enter firstName">
+                <small id="firstNameHelp" class="form-text text-muted">We'll never share your firstname with anyone else.</small>
+              </div>
+              <div class="form-group">
+                  <label for="lastname">LastName</label>
+                  <input type="text" class="form-control" name="lastname" formControlName="lastname" id="lastname" aria-describedby="lastNameHelp" placeholder="Enter lastName">
+                  <small id="lastNameHelp" class="form-text text-muted">We'll never share your lastName with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="birthday">BirthDay</label>      
+                    <div class="input-group">
+                      <input class="form-control" placeholder="yyyy-mm-dd"
+                             name="birthday" formControlName="birthday" ngbDatepicker #d="ngbDatepicker">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
+                      </div>
+                    </div>
+                 
+                  </div>
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" name="email" formControlName="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div formGroupName="address">
+                   <div class="form-group">
+                      <label for="country">Country</label>
+                      <select class="form-control" id="country" formControlName="country" class="form-control">
+                          <option *ngFor="let co of country" [value]="co">{{co}}</option>
+                      </select>            
+                   </div>
+                     <div class="form-group">
+                        <label for="city">City</label>
+                        <select class="form-control" id="city" formControlName="city" class="form-control">
+                            <option *ngFor="let ci of city" [value]="ci">{{ci}}</option>
+                        </select>             
+                    </div>
+                    <div class="form-group">
+                      <label for="region">Region</label>
+                      <select class="form-control" id="region" formControlName="region" class="form-control">
+                          <select class="form-control" id="region" formControlName="region" class="form-control">
+                              <option *ngFor="let re of region" [value]="re">{{re}}</option>
+                          </select> 
+                      </select>          
+                    </div>
+                    <div class="form-group">
+                      <label for="postalCode">PostalCode</label>
+                      <input type="text" class="form-control" name="postalCode" formControlName="postalCode" id="postalCode" placeholder="Enter postalCode">
+                    </div>
+                </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+      </div>
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Customer Detail</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                  <div class="col-sm">
+                    <b>First Name</b>
+                  </div>
+                  <div class="col-sm">
+                    {{customerDetail?.firstname}}
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                      <b>Last Name</b>
+                    </div>
+                    <div class="col-sm">
+                        {{customerDetail?.lastname}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                      <b>Birthday</b>
+                    </div>
+                    <div class="col-sm">
+                        {{customerDetail?.birthday?.day +"/"+ customerDetail?.birthday?.month +"/"+ customerDetail?.birthday?.year}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                      <b>Address</b>
+                    </div>
+                    <div class="col-sm">
+                      {{customerDetail?.address?.region +" "+ customerDetail?.address?.city +" "+
+                      customerDetail?.address?.postalCode +" "+ customerDetail?.address?.country}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                      <b>Phone</b>
+                    </div>
+                    <div class="col-sm">
+                      {{customerDetail?.phone}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                      <b>Email</b>
+                    </div>
+                    <div class="col-sm">
+                      {{customerDetail?.email}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

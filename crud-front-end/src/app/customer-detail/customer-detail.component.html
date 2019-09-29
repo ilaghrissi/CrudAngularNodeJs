@@ -1,0 +1,33 @@
+<div class="container">
+<h3>Customer detail:</h3>
+<form *ngIf="customer" [formGroup]="updateForm" (ngSubmit)="updateCustomer()">
+    <div class="form-group">
+      <label for="firstname">FirstName</label>
+      <input type="text" class="form-control" name="firstname" formControlName="firstname" id="firstname" aria-describedby="firstNameHelp" placeholder="Enter firstName">
+      <small id="firstNameHelp" class="form-text text-muted">We'll never share your firstname with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="lastname">LastName</label>
+        <input type="text" class="form-control" name="lastname" formControlName="lastname" id="lastname" aria-describedby="lastNameHelp" placeholder="Enter lastName">
+        <small id="lastNameHelp" class="form-text text-muted">We'll never share your lastName with anyone else.</small>
+      </div>
+      <div class="form-group">
+          <label for="birthday">BirthDay</label>      
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                   name="birthday" ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
+            </div>
+          </div>
+       
+        </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email" formControlName="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div> 
