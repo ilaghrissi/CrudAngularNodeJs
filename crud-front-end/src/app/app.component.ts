@@ -27,8 +27,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.addForm = this.formBuilder.group({
       _id: [],
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
+      firstname: ['', Validators.required, Validators.maxLength(10)],
+      lastname: ['', Validators.required, Validators.maxLength(10)],
       birthday: [],
       address : this.formBuilder.group({
         country : [],
